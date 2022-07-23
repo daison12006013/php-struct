@@ -1,4 +1,7 @@
-PHP 7.4 [![PHP Composer](https://github.com/daison12006013/php-struct/actions/workflows/php7.4.yml/badge.svg)](https://github.com/daison12006013/php-struct/actions/workflows/php7.4.yml)
+PHP Version | Status
+------------|--------
+7.4 | [![PHP 7.4 Composer](https://github.com/daison12006013/php-struct/actions/workflows/php7.4.yml/badge.svg)](https://github.com/daison12006013/php-struct/actions/workflows/php7.4.yml)
+8.x | in progress...
 
 # PHP Struct
 
