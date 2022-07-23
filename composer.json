@@ -1,0 +1,24 @@
+{
+    "name": "daison/php-struct",
+    "description": "Struct like implementation for PHP inspired by Go (golang)",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daison Carino",
+            "email": "daison12006013@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Daison\\Struct\\": "src/"
+        }
+    },
+    "require-dev": {
+        "pestphp/pest": "1.x-dev"
+    }
+}

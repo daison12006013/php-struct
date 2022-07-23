@@ -1,0 +1,6 @@
+* text=auto
+*.php diff=php
+
+/tests export-ignore
+example.php export-ignore
+run-tests.sh export-ignore
