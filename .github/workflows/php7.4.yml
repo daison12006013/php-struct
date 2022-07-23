@@ -1,4 +1,4 @@
-name: PHP Composer
+name: PHP 7.4 Composer
 
 on:
   push:
@@ -40,5 +40,5 @@ jobs:
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
-    - name: Run test suite
+    - name: Run test suite for PHP 7.4
       run: ./run-tests.sh

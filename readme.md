@@ -1,3 +1,5 @@
+PHP 7.4 [![PHP Composer](https://github.com/daison12006013/php-struct/actions/workflows/php7.4.yml/badge.svg)](https://github.com/daison12006013/php-struct/actions/workflows/php7.4.yml)
+
 # PHP Struct
 
 A new way to structure your data, apply a real strict typing to your team, avoid any unwanted types!
