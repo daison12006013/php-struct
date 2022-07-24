@@ -53,7 +53,7 @@ try {
 
 A full examples can be seen inside [example.php](example.php) or by running `./run-tests.sh`
 
-## Type Hinting
+## Type Hinting (optional)
 
 For your IDE's or VSCode "PHP Intelephense" or similar.
 Type hinting helps you to show a lists of available methods.
@@ -89,3 +89,7 @@ Above code, we are referencing the interface into `$photoStruct` variable. So ba
   - [x] Data type is different from the value returned
   - [x] Returned type is different from the value returned
 - [ ] Validation (in progress...)
+
+## License
+
+The php-struct library is open-sourced software licensed under the [MIT license.](/license.md)
