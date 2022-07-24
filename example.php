@@ -10,18 +10,18 @@ use Daison\Struct\Contract;
 use Daison\Struct\Struct;
 
 /**
- * @method string             email()     Get the email
- * @method string             firstName() Get the first name
- * @method string             lastName()  Get the last name
- * @method string             gender()    Get the gender
- * @method int                age()       Get the age
- * @method Collection         photos()    Get the lists of photos
- * @method bool               married()
- * @method TypeLocationStruct location()
- * @method Closure            closure()
- * @method DummyClass         class()
+ * @method string                email()     Get the email
+ * @method string                firstName() Get the first name
+ * @method string                lastName()  Get the last name
+ * @method string                gender()    Get the gender
+ * @method int                   age()       Get the age
+ * @method Collection            photos()    Get the lists of photos
+ * @method bool                  married()
+ * @method TypeLocationInterface location()
+ * @method Closure               closure()
+ * @method DummyClass            class()
  */
-interface TypeUserStruct extends Contract
+interface TypeUserInterface extends Contract
 {
     // avoid filling this up, the purpose of this interface
     // is only to support your IDE / Code Editor
@@ -31,7 +31,7 @@ interface TypeUserStruct extends Contract
  * @method string url()
  * @method string name()
  */
-interface TypePhotoStruct extends Contract
+interface TypePhotoInterface extends Contract
 {
     // avoid filling this up, the purpose of this interface
     // is only to support your IDE / Code Editor
@@ -41,7 +41,7 @@ interface TypePhotoStruct extends Contract
  * @method float x() Get the x axis
  * @method float y() Get the y axis
  */
-interface TypeLocationStruct extends Contract
+interface TypeLocationInterface extends Contract
 {
     // avoid filling this up, the purpose of this interface
     // is only to support your IDE / Code Editor
@@ -52,13 +52,13 @@ $locationStruct = new Struct([
     'y' => fn (float $y): float => $y,
 ]);
 
-/** @var TypePhotoStruct */
+/** @var TypePhotoInterface */
 $photoStruct = new Struct([
     'name' => fn (string $name): string => $name,
     'url' => fn (string $url): string => $url,
 ]);
 
-/** @var TypeUserStruct */
+/** @var TypeUserInterface */
 $userStruct = new Struct([
     'email' => fn (string $email): string => $email,
     'firstName' => fn (string $firstName): string => $firstName,
@@ -114,7 +114,7 @@ var_dump([
     'class' => $userStruct->class(),
 ]);
 
-/** @var TypePhotoStruct */
+/** @var TypePhotoInterface */
 foreach ($userStruct->photos() as $idx => $photo) {
     var_dump($idx, $photo->name());
     var_dump($idx, $photo->url());

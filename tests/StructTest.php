@@ -8,18 +8,18 @@ use Daison\Struct\Contract;
 use Daison\Struct\Struct;
 
 /**
- * @method string       email()     Get the email
- * @method string       firstName() Get the first name
- * @method string       lastName()  Get the last name
- * @method string       gender()    Get the gender
- * @method int          age()       Get the age
- * @method Collection   photos()    Get the lists of photos
- * @method bool         married()
- * @method LocationType location()
- * @method Closure      closure()
- * @method DummyClass   class()
+ * @method string                email()     Get the email
+ * @method string                firstName() Get the first name
+ * @method string                lastName()  Get the last name
+ * @method string                gender()    Get the gender
+ * @method int                   age()       Get the age
+ * @method Collection            photos()    Get the lists of photos
+ * @method bool                  married()
+ * @method TypeLocationInterface location()
+ * @method Closure               closure()
+ * @method DummyClass            class()
  */
-interface TypeUserStruct extends Contract
+interface TypeUserInterface extends Contract
 {
 }
 
@@ -27,7 +27,7 @@ interface TypeUserStruct extends Contract
  * @method string url()
  * @method string name()
  */
-interface TypePhotoStruct extends Contract
+interface TypePhotoInterface extends Contract
 {
 }
 
@@ -35,7 +35,7 @@ interface TypePhotoStruct extends Contract
  * @method float x()
  * @method float y()
  */
-interface TypeLocationStruct extends Contract
+interface TypeLocationInterface extends Contract
 {
 }
 
@@ -44,13 +44,13 @@ $locationStruct = new Struct([
     'y' => fn (float $y): float => $y,
 ]);
 
-/** @var TypePhotoStruct */
+/** @var TypePhotoInterface */
 $photoStruct = new Struct([
     'name' => fn ($name): string => $name,
     'url' => fn ($url): string => $url,
 ]);
 
-/** @var TypeUserStruct */
+/** @var TypeUserInterface */
 $userStruct = new Struct([
     'email' => fn (string $email): string => $email,
     'firstName' => fn (string $firstName): string => $firstName,
@@ -120,7 +120,7 @@ test('collection', function () use ($userStruct) {
     expect($userStruct->photos())->toBeInstanceOf(Collection::class);
     expect($userStruct->photos()->empty())->toBe(false);
 
-    /** @var TypePhotoStruct */
+    /** @var TypePhotoInterface */
     foreach ($userStruct->photos() as $photo) {
         expect($photo->name())->toBe('GitHub');
         expect($photo->url())->toBe('https://github.com/daison12006013');
@@ -134,7 +134,7 @@ test('collection', function () use ($userStruct) {
 });
 
 test('return type expects [int] but value is [string]', function () {
-    /** @var TypeUserStruct */
+    /** @var TypeUserInterface */
     $struct = new Struct([
         'email' => fn (string $email): int => $email,
     ]);
@@ -148,7 +148,7 @@ test('return type expects [int] but value is [string]', function () {
 });
 
 test('data type expects [int] but value is [string]', function () {
-    /** @var TypeUserStruct */
+    /** @var TypeUserInterface */
     $struct = new Struct([
         'email' => fn (int $email): string => $email,
     ]);
