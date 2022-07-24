@@ -8,6 +8,7 @@ require_once __DIR__.'/vendor/autoload.php';
 use Daison\Struct\Collection;
 use Daison\Struct\Contract;
 use Daison\Struct\Struct;
+use Daison\Struct\Common;
 
 /**
  * @method string                email()     Get the email
@@ -48,26 +49,27 @@ interface TypeLocationInterface extends Contract
 }
 
 $locationStruct = new Struct([
-    'x' => fn (float $x): float => $x,
-    'y' => fn (float $y): float => $y,
+    'x' => Common::FLOAT(),
+    'y' => Common::FLOAT(),
 ]);
 
 /** @var TypePhotoInterface */
 $photoStruct = new Struct([
-    'name' => fn (string $name): string => $name,
-    'url' => fn (string $url): string => $url,
+    'name' => Common::STRING(),
+    'url' => Common::STRING(),
 ]);
 
 /** @var TypeUserInterface */
 $userStruct = new Struct([
+    'any' => Common::ANY(),
     'nullStringKey1' => fn (string $value) => $value,
     'nullStringKey2' => fn (string $value) => $value,
-    'email' => fn (string $email): string => $email,
-    'firstName' => fn (string $firstName): string => $firstName,
-    'lastName' => fn (string $lastName): string => $lastName,
-    'gender' => fn (string $gender): string => $gender,
-    'age' => fn (int $age): int => $age,
-    'married' => fn (bool $married): bool => $married,
+    'email' => Common::STRING(),
+    'firstName' => Common::STRING(),
+    'lastName' => Common::STRING(),
+    'gender' => Common::STRING(),
+    'age' => Common::INTEGER(),
+    'married' => Common::BOOLEAN(),
     'location' => fn (array $location) => $locationStruct->load($location),
     'photos' => fn (array $photos) => new Collection($photoStruct, $photos ?? []),
     'closure' => fn (Closure $x): Closure => $x,
@@ -79,6 +81,10 @@ class DummyClass
 }
 
 $userStruct->load([
+    'any' => 111222,
+    // 'nullStringKey1' => 'imagine this is not passed by your Clients, but you are allowing them.',
+    'nullStringKey2' => 'this is nullable string key',
+
     'email' => 'johndoe@email.com',
     'firstName' => 'John',
     'lastName' => 'Doe',
@@ -95,8 +101,6 @@ $userStruct->load([
     ],
     'closure' => fn () => true,
     'class' => new DummyClass(),
-    // 'nullStringKey1' => 'imagine this is not passed by your Clients, but you are allowing them.',
-    'nullStringKey2' => 'this is nullable string key',
 ]);
 
 var_dump([
