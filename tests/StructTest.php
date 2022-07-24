@@ -181,3 +181,21 @@ test('loaded with empty data', function () {
     $struct->load(['email' => 'johndoe@email.com']);
     expect($struct->email())->toBe('johndoe@email.com');
 });
+
+test('optional keys should still be generated', function () {
+    $struct = new Struct([
+        'age' => fn (int $age) => $age,
+        'email' => fn (string $email): string => $email,
+    ]);
+
+    $struct->load([
+        'email' => 'johndoe@email.com'
+    ]);
+
+    expect($struct->toArray())->toBe([
+        'age'   => null,
+        'email' => 'johndoe@email.com',
+    ]);
+    expect($struct->age())->toBe(null);
+    expect($struct->email())->toBe('johndoe@email.com');
+});

@@ -51,16 +51,32 @@ class Struct implements Contract
             $this->strictParameterChecking($name);
         }
 
+        if (! isset($this->data[$name])) {
+            return null;
+        }
+
         return call_user_func($this->dataTypes[$name], $this->data[$name]);
     }
 
+    /**
+     * Check params and returns.
+     *
+     * @param string $name
+     * @return void
+     * @throws TypeException
+     */
     protected function strictParameterChecking(string $name)
     {
-        $value = $this->data[$name];
         $ref = new ReflectionFunction($this->dataTypes[$name]);
         $paramTypes = $this->resolveClosureParams($ref);
-        $valueType = gettype($value);
         $returnType = $ref->getReturnType();
+
+        if ($returnType === null) {
+            return null;
+        }
+
+        $value = $this->data[$name];
+        $valueType = gettype($value);
 
         // rewrite the value type if it is an object
         // we want to compare the full class of it
