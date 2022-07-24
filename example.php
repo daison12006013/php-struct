@@ -60,6 +60,8 @@ $photoStruct = new Struct([
 
 /** @var TypeUserInterface */
 $userStruct = new Struct([
+    'nullStringKey1' => fn (string $value) => $value,
+    'nullStringKey2' => fn (string $value) => $value,
     'email' => fn (string $email): string => $email,
     'firstName' => fn (string $firstName): string => $firstName,
     'lastName' => fn (string $lastName): string => $lastName,
@@ -93,6 +95,8 @@ $userStruct->load([
     ],
     'closure' => fn () => true,
     'class' => new DummyClass(),
+    // 'nullStringKey1' => 'imagine this is not passed by your Clients, but you are allowing them.',
+    'nullStringKey2' => 'this is nullable string key',
 ]);
 
 var_dump([
@@ -112,6 +116,8 @@ var_dump([
     'toArray' => $userStruct->toArray(),
     'closure' => $userStruct->closure(),
     'class' => $userStruct->class(),
+    'nullStringKey1' => $userStruct->nullStringKey1(), // returns null
+    'nullStringKey2' => $userStruct->nullStringKey2(), // this is nullable string key
 ]);
 
 /** @var TypePhotoInterface */

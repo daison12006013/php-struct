@@ -10,6 +10,6 @@ namespace Daison\Struct;
  */
 interface Contract
 {
-    // public function load(array $data);
-    // public function toArray(): array;
+    public function load($data);
+    public function toArray(): array;
 }
