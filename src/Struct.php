@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace Daison\Struct;
 
-use ArrayAccess;
-use RuntimeException;
 use ReflectionFunction;
-use Closure;
-use InvalidArgumentException;
 use ReflectionType;
-use ReflectionNamedType;
 
 class Struct implements Contract
 {
@@ -49,7 +44,7 @@ class Struct implements Contract
     public function __call(string $name, array $args = [])
     {
         if (!isset($this->dataTypes[$name])) {
-            throw new RuntimeException("Struct: Undefined struct data [$name]");
+            throw new TypeException("Struct: Undefined struct data [$name]");
         }
 
         if (!defined('STRUCT_PARAM_CHECKING') || STRUCT_PARAM_CHECKING) {
@@ -75,15 +70,15 @@ class Struct implements Contract
 
         $valueToStr = $this->transformToString($value);
 
-        if (!empty($paramTypes[0]) && ! $this->isTypeEqual($paramTypes[0], $valueType)) {
-            throw new InvalidArgumentException("Struct: Data type of [$name] expects [{$paramTypes[0]}] but value is $valueToStr typed [$valueType]");
+        if (!empty($paramTypes[0]) && !$this->isTypeEqual($paramTypes[0], $valueType)) {
+            throw new TypeException("Struct: Data type of [$name] expects [{$paramTypes[0]}] but value is $valueToStr typed [$valueType]");
         }
 
         if ($returnType instanceof ReflectionType) {
             $returnType = (string) $returnType;
 
-            if (! $this->isTypeEqual($returnType, $valueType)) {
-                throw new InvalidArgumentException("Struct: Return type of [$name] expects [$returnType] but value is $valueToStr typed [$valueType]");
+            if (!$this->isTypeEqual($returnType, $valueType)) {
+                throw new TypeException("Struct: Return type of [$name] expects [$returnType] but value is $valueToStr typed [$valueType]");
             }
         }
     }
@@ -98,18 +93,15 @@ class Struct implements Contract
     }
 
     /**
-     * Check if both param are equal
-     *
-     * @param string $first
-     * @param string $second
+     * Check if both param are equal.
      *
      * @return bool
      */
     protected function isTypeEqual(string $first, string $second)
     {
         $maps = [
-            'int'   => 'integer',
-            'bool'  => 'boolean',
+            'int' => 'integer',
+            'bool' => 'boolean',
             'float' => 'double',
         ];
 

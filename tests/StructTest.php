@@ -6,6 +6,7 @@ error_reporting(E_ALL & ~E_DEPRECATED);
 use Daison\Struct\Collection;
 use Daison\Struct\Contract;
 use Daison\Struct\Struct;
+use Daison\Struct\TypeException;
 
 /**
  * @method string                email()     Get the email
@@ -127,7 +128,7 @@ test('collection', function () use ($userStruct) {
 
         // expect that this will throw an error, unless it is part of the loaded struct
         expect(fn () => $photo->whatever())->toThrow(
-            RuntimeException::class,
+            TypeException::class,
             'Struct: Undefined struct data [whatever]'
         );
     }
@@ -142,7 +143,7 @@ test('return type expects [int] but value is [string]', function () {
     $struct->load(['email' => 'johndoe@email.com']);
 
     expect(fn () => $struct->email())->toThrow(
-        InvalidArgumentException::class,
+        TypeException::class,
         'Struct: Return type of [email] expects [int] but value is johndoe@email.com typed [string]'
     );
 });
@@ -156,7 +157,7 @@ test('data type expects [int] but value is [string]', function () {
     $struct->load(['email' => 'johndoe@email.com']);
 
     expect(fn () => $struct->email())->toThrow(
-        InvalidArgumentException::class,
+        TypeException::class,
         'Struct: Data type of [email] expects [int] but value is johndoe@email.com typed [string]'
     );
 });
@@ -167,7 +168,7 @@ test('loaded with empty data', function () {
     ]);
 
     expect(fn () => $struct->eeeeeemail())->toThrow(
-        RuntimeException::class,
+        TypeException::class,
         'Struct: Undefined struct data [eeeeeemail]'
     );
 

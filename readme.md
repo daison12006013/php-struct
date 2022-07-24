@@ -12,8 +12,8 @@ Inspired by Go (golang)
 ## Example
 
 ```php
-
 use Daison\Struct\Collection;
+use Daison\Struct\TypeException;
 use Daison\Struct\Struct;
 
 $photoStruct = new Struct([
@@ -41,8 +41,14 @@ $userStruct->firstName(); // John
 $userStruct->photos()->empty(); // false
 $userStruct->photos()[0]->url(); // https://images.dummy.com/x.jpg
 
-$userStruct->age(); // Struct: Data type of [age] expects [int] but value is '31' typed [string]
-$userStruct->email(); // Struct: Undefined struct data [email]
+try {
+    $userStruct->age(); // Struct: Data type of [age] expects [int] but value is '31' typed [string]
+    $userStruct->email(); // Struct: Undefined struct data [email]
+} catch (TypeException $e) {
+    var_dump($e);
+
+    throw $e;
+}
 ```
 
 A full examples can be seen inside [example.php](example.php) or by running `./run-tests.sh`
