@@ -8,18 +8,18 @@ use Daison\Struct\Contract;
 use Daison\Struct\Struct;
 
 /**
- * @method string     email()     Get the email
- * @method string     firstName() Get the first name
- * @method string     lastName()  Get the last name
- * @method string     gender()    Get the gender
- * @method int        age()       Get the age
- * @method Collection photos()    Get the lists of photos
- * @method bool       married()
- * @method array      location()
- * @method Closure    closure()
- * @method DummyClass class()
+ * @method string       email()     Get the email
+ * @method string       firstName() Get the first name
+ * @method string       lastName()  Get the last name
+ * @method string       gender()    Get the gender
+ * @method int          age()       Get the age
+ * @method Collection   photos()    Get the lists of photos
+ * @method bool         married()
+ * @method LocationType location()
+ * @method Closure      closure()
+ * @method DummyClass   class()
  */
-interface UserStruct extends Contract
+interface TypeUserStruct extends Contract
 {
 }
 
@@ -27,17 +27,30 @@ interface UserStruct extends Contract
  * @method string url()
  * @method string name()
  */
-interface PhotoStruct extends Contract
+interface TypePhotoStruct extends Contract
 {
 }
 
-/** @var PhotoStruct */
+/**
+ * @method float x()
+ * @method float y()
+ */
+interface TypeLocationStruct extends Contract
+{
+}
+
+$locationStruct = new Struct([
+    'x' => fn (float $x): float => $x,
+    'y' => fn (float $y): float => $y,
+]);
+
+/** @var TypePhotoStruct */
 $photoStruct = new Struct([
     'name' => fn ($name): string => $name,
     'url' => fn ($url): string => $url,
 ]);
 
-/** @var UserStruct */
+/** @var TypeUserStruct */
 $userStruct = new Struct([
     'email' => fn (string $email): string => $email,
     'firstName' => fn (string $firstName): string => $firstName,
@@ -45,7 +58,7 @@ $userStruct = new Struct([
     'gender' => fn (string $gender): string => $gender,
     'age' => fn (int $age): int => $age,
     'married' => fn (bool $married): bool => $married,
-    'location' => fn (array $location): array => $location,
+    'location' => fn (array $location) => $locationStruct->load($location),
     'photos' => fn (array $photos) => new Collection($photoStruct, $photos ?? []),
     'closure' => fn (Closure $x): Closure => $x,
     'class' => fn (DummyClass $x): DummyClass => $x,
@@ -74,24 +87,40 @@ $userStruct->load([
     'class' => new DummyClass(),
 ]);
 
-test('returned types', function () use ($userStruct) {
+test('value returned', function () use ($userStruct) {
     expect($userStruct->email())->toBe('johndoe@email.com');
     expect($userStruct->firstName())->toBe('John');
     expect($userStruct->lastName())->toBe('Doe');
     expect($userStruct->gender())->toBe('male');
     expect($userStruct->age())->toBe(31);
     expect($userStruct->married())->toBe(true);
-    expect($userStruct->location())->toBe(['x' => 0.111, 'y' => 0.555]);
+});
+
+test('returned types', function () use ($userStruct) {
+    expect($userStruct->email())->toBeString();
+    expect($userStruct->firstName())->toBeString();
+    expect($userStruct->lastName())->toBeString();
+    expect($userStruct->gender())->toBeString();
+    expect($userStruct->age())->toBeInt();
+    expect($userStruct->married())->toBeBool();
     expect($userStruct->toArray())->toBeArray();
     expect($userStruct->closure())->toBeCallable();
     expect($userStruct->class())->toBeInstanceOf(DummyClass::class);
+
+    expect($userStruct->location())->toBeInstanceOf(Struct::class);
+    expect($userStruct->location()->x())->toBeFloat();
+    expect($userStruct->location()->y())->toBeFloat();
+
+    expect($userStruct->photos())->toBeInstanceOf(Collection::class);
+    expect($userStruct->photos()[0])->toBeInstanceOf(Struct::class);
+    expect($userStruct->photos()[0]->name())->toBeString();
 });
 
 test('collection', function () use ($userStruct) {
     expect($userStruct->photos())->toBeInstanceOf(Collection::class);
     expect($userStruct->photos()->empty())->toBe(false);
 
-    /** @var PhotoStruct */
+    /** @var TypePhotoStruct */
     foreach ($userStruct->photos() as $photo) {
         expect($photo->name())->toBe('GitHub');
         expect($photo->url())->toBe('https://github.com/daison12006013');
@@ -105,7 +134,7 @@ test('collection', function () use ($userStruct) {
 });
 
 test('return type expects [int] but value is [string]', function () {
-    /** @var UserStruct */
+    /** @var TypeUserStruct */
     $struct = new Struct([
         'email' => fn (string $email): int => $email,
     ]);
@@ -119,7 +148,7 @@ test('return type expects [int] but value is [string]', function () {
 });
 
 test('data type expects [int] but value is [string]', function () {
-    /** @var UserStruct */
+    /** @var TypeUserStruct */
     $struct = new Struct([
         'email' => fn (int $email): string => $email,
     ]);

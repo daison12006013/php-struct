@@ -10,36 +10,55 @@ use Daison\Struct\Contract;
 use Daison\Struct\Struct;
 
 /**
- * @method string     email()     Get the email
- * @method string     firstName() Get the first name
- * @method string     lastName()  Get the last name
- * @method string     gender()    Get the gender
- * @method int        age()       Get the age
- * @method Collection photos()    Get the lists of photos
- * @method bool       married()
- * @method array      location()
- * @method Closure    closure()
- * @method DummyClass class()
+ * @method string             email()     Get the email
+ * @method string             firstName() Get the first name
+ * @method string             lastName()  Get the last name
+ * @method string             gender()    Get the gender
+ * @method int                age()       Get the age
+ * @method Collection         photos()    Get the lists of photos
+ * @method bool               married()
+ * @method TypeLocationStruct location()
+ * @method Closure            closure()
+ * @method DummyClass         class()
  */
-interface UserStruct extends Contract
+interface TypeUserStruct extends Contract
 {
+    // avoid filling this up, the purpose of this interface
+    // is only to support your IDE / Code Editor
 }
 
 /**
  * @method string url()
  * @method string name()
  */
-interface PhotoStruct extends Contract
+interface TypePhotoStruct extends Contract
 {
+    // avoid filling this up, the purpose of this interface
+    // is only to support your IDE / Code Editor
 }
 
-/** @var PhotoStruct */
-$photoStruct = new Struct([
-    'name' => fn ($name): string => $name,
-    'url' => fn ($url): string => $url,
+/**
+ * @method float x() Get the x axis
+ * @method float y() Get the y axis
+ */
+interface TypeLocationStruct extends Contract
+{
+    // avoid filling this up, the purpose of this interface
+    // is only to support your IDE / Code Editor
+}
+
+$locationStruct = new Struct([
+    'x' => fn (float $x): float => $x,
+    'y' => fn (float $y): float => $y,
 ]);
 
-/** @var UserStruct */
+/** @var TypePhotoStruct */
+$photoStruct = new Struct([
+    'name' => fn (string $name): string => $name,
+    'url' => fn (string $url): string => $url,
+]);
+
+/** @var TypeUserStruct */
 $userStruct = new Struct([
     'email' => fn (string $email): string => $email,
     'firstName' => fn (string $firstName): string => $firstName,
@@ -47,7 +66,7 @@ $userStruct = new Struct([
     'gender' => fn (string $gender): string => $gender,
     'age' => fn (int $age): int => $age,
     'married' => fn (bool $married): bool => $married,
-    'location' => fn (array $location): array => $location,
+    'location' => fn (array $location) => $locationStruct->load($location),
     'photos' => fn (array $photos) => new Collection($photoStruct, $photos ?? []),
     'closure' => fn (Closure $x): Closure => $x,
     'class' => fn (DummyClass $x): DummyClass => $x,
@@ -82,16 +101,20 @@ var_dump([
     'lastName' => $userStruct->lastName(),
     'gender' => $userStruct->gender(),
     'age' => $userStruct->age(),
-    'photos' => $userStruct->photos(),
     'married' => $userStruct->married(),
     'location' => $userStruct->location(),
+    'location_x' => $userStruct->location()->x(),
+    'location_y' => $userStruct->location()->y(),
+    'photos' => $userStruct->photos(),
+    'photos_0' => $userStruct->photos()[0],
+    'photos_0_name' => $userStruct->photos()[0]->name(),
     'photos_is_empty' => $userStruct->photos()->empty(),
     'toArray' => $userStruct->toArray(),
     'closure' => $userStruct->closure(),
     'class' => $userStruct->class(),
 ]);
 
-/** @var PhotoStruct */
+/** @var TypePhotoStruct */
 foreach ($userStruct->photos() as $idx => $photo) {
     var_dump($idx, $photo->name());
     var_dump($idx, $photo->url());

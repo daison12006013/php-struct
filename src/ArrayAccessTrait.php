@@ -25,7 +25,7 @@ trait ArrayAccessTrait
         unset($this->data[$offset]);
     }
 
-    public function offsetGet($offset): bool
+    public function offsetGet($offset)
     {
         return isset($this->data[$offset]) ? $this->data[$offset] : null;
     }
