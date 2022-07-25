@@ -74,15 +74,15 @@ $userStruct->load([
 ]);
 
 try {
-    $userStruct->firstName(); // John
-    $userStruct->photos()->empty(); // false
-    $userStruct->photos()[0]->url(); // https://images.dummy.com/x.jpg
+    $userStruct->firstName; // John
+    $userStruct->photos->empty(); // false
+    $userStruct->photos[0]->url; // https://images.dummy.com/x.jpg
 
     // TypeException -> "Struct: Data type of [age] expects [int] but value is '31' typed [string]"
-    $userStruct->age();
+    $userStruct->age;
 
     // TypeException -> "Struct: Undefined struct data [email]"
-    $userStruct->email();
+    $userStruct->email;
 } catch (TypeException $e) {
     // log it somewhere thru your kibana / sentry
     var_dump($e);
@@ -111,8 +111,8 @@ $sample = new Struct([
 ]);
 
 $sample->load($load);
-$sample->location()->x(); // 0.111
-$sample->location()->y(); // 0.555
+$sample->location->x; // 0.111
+$sample->location->y; // 0.555
 ```
 
 ## Optional Keys

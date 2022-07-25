@@ -43,6 +43,28 @@ class Struct implements Contract
 
     public function __call(string $name, array $args = [])
     {
+        return $this->findKeyAndCall($name);
+    }
+
+    /**
+     * Automatically resolve a variable
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function __get(string $name)
+    {
+        return $this->findKeyAndCall($name);
+    }
+
+    /**
+     * Find the array key and invoke the callback.
+     *
+     * @param  string $name
+     * @return void
+     */
+    protected function findKeyAndCall(string $name)
+    {
         if (!isset($this->dataTypes[$name])) {
             throw new TypeException("Struct: Undefined struct data [$name]");
         }

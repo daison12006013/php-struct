@@ -104,31 +104,31 @@ $userStruct->load([
 ]);
 
 var_dump([
-    'email' => $userStruct->email(),
-    'firstName' => $userStruct->firstName(),
-    'lastName' => $userStruct->lastName(),
-    'gender' => $userStruct->gender(),
-    'age' => $userStruct->age(),
-    'married' => $userStruct->married(),
-    'location' => $userStruct->location(),
-    'location_x' => $userStruct->location()->x(),
-    'location_y' => $userStruct->location()->y(),
-    'photos' => $userStruct->photos(),
-    'photos_0' => $userStruct->photos()[0],
-    'photos_0_name' => $userStruct->photos()[0]->name(),
-    'photos_is_empty' => $userStruct->photos()->empty(),
+    'email' => $userStruct->email,
+    'firstName' => $userStruct->firstName,
+    'lastName' => $userStruct->lastName,
+    'gender' => $userStruct->gender,
+    'age' => $userStruct->age,
+    'married' => $userStruct->married,
+    'location' => $userStruct->location,
+    'location_x' => $userStruct->location->x,
+    'location_y' => $userStruct->location->y,
+    'photos' => $userStruct->photos,
+    'photos_0' => $userStruct->photos[0],
+    'photos_0_name' => $userStruct->photos[0]->name,
+    'photos_is_empty' => $userStruct->photos->empty(),
     'toArray' => $userStruct->toArray(),
-    'closure' => $userStruct->closure(),
-    'class' => $userStruct->class(),
-    'nullStringKey1' => $userStruct->nullStringKey1(), // returns null
-    'nullStringKey2' => $userStruct->nullStringKey2(), // this is nullable string key
+    'closure' => $userStruct->closure,
+    'class' => $userStruct->class,
+    'nullStringKey1' => $userStruct->nullStringKey1, // returns null
+    'nullStringKey2' => $userStruct->nullStringKey2, // this is nullable string key
 ]);
 
 /** @var TypePhotoInterface */
-foreach ($userStruct->photos() as $idx => $photo) {
-    var_dump($idx, $photo->name());
-    var_dump($idx, $photo->url());
+foreach ($userStruct->photos as $idx => $photo) {
+    var_dump($idx, $photo->name);
+    var_dump($idx, $photo->url);
 
     // expect that this will throw an error, unless it is part of the loaded struct
-    // var_dump($idx, $photo->whatever());
+    // var_dump($idx, $photo->whatever);
 }
