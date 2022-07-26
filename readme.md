@@ -22,7 +22,7 @@ Inspired by Go(golang)'s struct
 
 ## Quick Example
 
-We do it this way in golang, where we transform a json request going to the server.
+We do it this way in golang, where we transform a json request into a struct type automatically.
 
 ```go
 type Photo struct {
@@ -52,18 +52,18 @@ use Daison\Struct\Common;
 use Daison\Struct\TypeException;
 use Daison\Struct\Struct;
 
-$photoStruct = new Struct([
+$photo = new Struct([
     'name' => Common::STRING(),
-    'url' => Common::STRING(),
+    'url'  => Common::STRING(),
 ]);
 
-$userStruct = new Struct([
+$user = new Struct([
     'firstName' => Common::STRING(),
-    'age' => Common::INTEGER(),
-    'photos' => fn (array $photos) => new Collection($photoStruct, $photos ?? []),
+    'age'       => Common::INTEGER(),
+    'photos'    => fn (array $p) => new Collection($photo, $p ?? []),
 ]);
 
-$userStruct->load([
+$user->load([
     'firstName' => 'John',
     'age' => '31',
     'photos' => [
@@ -74,15 +74,15 @@ $userStruct->load([
 ]);
 
 try {
-    $userStruct->firstName; // John
-    $userStruct->photos->empty(); // false
-    $userStruct->photos[0]->url; // https://images.dummy.com/x.jpg
+    $user->firstName; // John
+    $user->photos->empty(); // false
+    $user->photos[0]->url; // https://images.dummy.com/x.jpg
 
     // TypeException -> "Struct: Data type of [age] expects [int] but value is '31' typed [string]"
-    $userStruct->age;
+    $user->age;
 
     // TypeException -> "Struct: Undefined struct data [email]"
-    $userStruct->email;
+    $user->email;
 } catch (TypeException $e) {
     // log it somewhere thru your kibana / sentry
     var_dump($e);
@@ -134,43 +134,11 @@ $sample = new Struct([
 
     // since we require it to be "string", the library can detect and throw
     // TypeException if the provided data is missing or the type is wrong
-    'requiredKey' => fn (string $age) => string $age,
+    'requiredKey' => Common::STRING(),
 ]);
 $sample->load($load);
 $sample->toArray(); // ['nullableKey' => null, 'requiredKey' => 1]
 ```
-
-<!--
-## Type Hinting (optional)
-
-For your IDE's or VSCode "PHP Intelephense" or similar.
-Type hinting helps you to show a lists of available methods.
-
-```php
-/**
- * @method string url()
- * @method string name()
- */
-interface TypePhotoInterface extends Contract
-{
-    // avoid filling this up, the purpose of this interface
-    // is only to support your IDE / Code Editor
-}
-```
-
-Let's determine above code, as you can see I've created an interface `TypePhotoInterface` and added a 2 methods `url()` and `name()` [php docblock](https://docs.phpdoc.org/2.9/references/phpdoc/tags/method.html#:~:text=The%20%40method%20tag%20allows%20the,case%20'void'%20is%20implied.)
-
-```php
-/** @var TypePhotoInterface */
-$photoStruct = new Struct([
-    'name' => fn (string $name): string => $name,
-    'url' => fn (string $url): string => $url,
-]);
-```
-
-Above code, we are referencing the interface into `$photoStruct` variable. So basically when you're going to type this `$photoStruct->` into your code editor, it will just basically show the lists of methods available.
-
--->
 
 ## Checklists
 
@@ -178,6 +146,7 @@ Above code, we are referencing the interface into `$photoStruct` variable. So ba
 - [x] Thrown strict types
   - [x] Data type is different from the value returned
   - [x] Returned type is different from the value returned
+- [ ] Error Bags
 - [ ] Validation (in progress...)
 
 ## License
